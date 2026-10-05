@@ -84,27 +84,27 @@ class ProxmoxCard extends HTMLElement {
   render() {
     if (!this.shadowRoot || !this._hass) return;
     const status = this.status();
-    const cpu = this.number("cpu_usage");
-    const ram = this.number("memory_usage_percentage");
-    const diskState = this.entity("disk_usage");
-    const diskMax = this.number("max_disk_usage");
+    const cpu = this.number("cpu_auslastung");
+    const ram = this.number("prozentsatz_genutzter_arbeitsspeicher");
+    const diskState = this.entity("prozentsatz_belegter_speicherplatz");
+    const diskMax = this.number("gesamtspeicherplatz");
     const disk = diskState && diskMax ? (Number.parseFloat(diskState.state) / diskMax) * 100 : null;
 
-    const ramMaxState = this.entity("max_memory_usage");
-    const ramUsedState = this.entity("memory_usage");
+    const ramMaxState = this.entity("gesamtarbeitsspeicher");
+    const ramUsedState = this.entity("genutzter_arbeitsspeicher");
     const ramUnit = ramMaxState?.attributes.unit_of_measurement || "GiB";
     const ramSub = ramMaxState && ramUsedState
       ? `${this.fmtGiB(Number.parseFloat(ramUsedState.state))} / ${this.fmtGiB(Number.parseFloat(ramMaxState.state))} ${ramUnit}`
       : null;
-    const diskUnit = this.entity("max_disk_usage")?.attributes.unit_of_measurement || "GiB";
+    const diskUnit = this.entity("gesamtspeicherplatz")?.attributes.unit_of_measurement || "GiB";
     const diskSub = disk !== null
       ? `${this.fmtGiB(Number.parseFloat(diskState.state))} / ${this.fmtGiB(diskMax)} ${diskUnit}`
       : null;
 
-    const netIn = this.display("network_input");
-    const netOut = this.display("network_output");
-    const uptime = this.display("uptime");
-    const statusText = status.online ? "Online" : status.raw === "unknown" ? "Indisponibil" : "Oprit";
+    const netIn = this.display("netzwerk_eingang");
+    const netOut = this.display("netzwerk_ausgang");
+    const uptime = this.display("letzter_start");
+    const statusText = status.online ? "Online" : status.raw === "unknown" ? "Offline" : "Online";
     this.shadowRoot.innerHTML = `<style>
       :host{display:block;height:100%}ha-card{height:100%;overflow:hidden;position:relative;padding:18px;border-radius:22px;background:linear-gradient(145deg,var(--ha-card-background,var(--card-background-color)),color-mix(in srgb,var(--primary-color) 8%,var(--ha-card-background,var(--card-background-color))));box-sizing:border-box}
       ha-card:before{content:"";position:absolute;inset:-70%;background:conic-gradient(from 90deg,transparent,var(--primary-color),transparent 22%);opacity:.08;pointer-events:none}
