@@ -88,7 +88,7 @@ class ProxmoxCard extends HTMLElement {
     const ram = this.number("prozentsatz_genutzter_arbeitsspeicher");
     const diskState = this.entity("belegter_speicherplatz");
     const diskMax = this.number("gesamtspeicherplatz");
-    const disk = diskState && diskMax ? (Number.parseFloat(diskState.state) / diskMax) * 100 : null;
+    const disk = this.number("prozentsatz_belegter_speicherplatz");
 
     const ramMaxState = this.entity("gesamtarbeitsspeicher");
     const ramUsedState = this.entity("genutzter_arbeitsspeicher");
